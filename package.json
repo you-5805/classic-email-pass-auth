@@ -1,5 +1,5 @@
 {
-  "name": "bluesky-web-clone",
+  "name": "classic-auth",
   "license": "MIT",
   "scripts": {
     "preinstall": "npx only-allow pnpm",
