@@ -1,33 +1,33 @@
 'use client';
 
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import type { FormEvent } from 'react';
 
-export function SignUp() {
+export function SignIn() {
+  const router = useRouter();
+
   const onSubmit = async (e: FormEvent) => {
     e.preventDefault();
     if (!(e.target instanceof HTMLFormElement)) return;
 
     const data = Object.fromEntries(new FormData(e.target).entries());
-    const res = await fetch('/api/auth/register', {
-      method: 'POST',
-      body: JSON.stringify(data),
-    });
-    if (!res.ok) {
-      const data = await res.json();
-      if (data.code === 'email-already-exists') {
-        alert('Email already been used. Please sign in');
-        return;
-      }
-      alert('Failed to sign up');
+    try {
+      const res = await fetch('/api/auth/sign-in', {
+        method: 'POST',
+        body: JSON.stringify(data),
+      });
+      if (!res.ok) throw new Error();
+      router.push('/mypage');
+    } catch (err) {
+      alert('Failed to sign in');
     }
-    alert('Verification mail has been sent to your email address');
   };
 
   return (
     <main className='mx-auto grid max-w-xl gap-4 p-2'>
       <form onSubmit={onSubmit} className='grid gap-4'>
-        <h1 className='text-2xl font-bold'>Sign up</h1>
+        <h1 className='text-2xl font-bold'>Sign in</h1>
         <label className='grid gap-1'>
           <span className='text-lg font-bold'>Email</span>
           <input
@@ -54,12 +54,12 @@ export function SignUp() {
       </form>
 
       <p>
-        Already have an account?
+        Don&apos;t have an account?
         <Link
-          href='/sign-in'
+          href='/'
           className='pl-2 font-bold text-indigo-800 hover:underline'
         >
-          Sign in
+          Sign up
         </Link>
       </p>
     </main>

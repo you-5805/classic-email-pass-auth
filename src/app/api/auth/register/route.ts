@@ -16,13 +16,12 @@ const reqBodySchema = z.object({
 export async function POST(req: NextRequest) {
   try {
     const { email, password } = reqBodySchema.parse(await req.json());
-    const [passwordHash, salt] = hashPassword(password);
+    const passwordHash = hashPassword(password);
     const result = await prisma.$transaction(async ($tx) => {
       const user = await $tx.user.create({
         data: {
           email,
           passwordHash,
-          salt,
         },
         select: {
           id: true,
@@ -59,7 +58,7 @@ http://localhost:3000/api/auth/verify-email/${emailVerificationIntent.id}?token=
     if (err instanceof PrismaClientKnownRequestError) {
       if (err.code === 'P2002') {
         return NextResponse.json(
-          { message: 'Email already exists' },
+          { message: 'Email already exists', code: 'email-already-exists' },
           { status: 400 },
         );
       }

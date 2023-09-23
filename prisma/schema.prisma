@@ -16,7 +16,6 @@ model User {
   displayName      String  @default("ユーザー") @map("display_name")
   email            String  @unique
   passwordHash     String  @map("password_hash")
-  salt             String
   hasEmailVerified Boolean @default(false) @map("has_email_verified")
 
   EmailVerificationIntents EmailVerificationIntents[]
