@@ -33,7 +33,7 @@ model EmailVerificationIntents {
   expiresAt DateTime @map("expires_at")
 
   userId String @map("user_id")
-  User   User   @relation(fields: [userId], references: [id])
+  User   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("email_verification_intents")
 }

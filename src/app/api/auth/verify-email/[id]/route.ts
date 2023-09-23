@@ -1,5 +1,7 @@
+import { createJwt } from '@/server/lib/jwt';
 import { prisma } from '@/server/lib/prisma';
 import { NextResponse } from 'next/server';
+import { cookies } from 'next/headers';
 import type { NextRequest } from 'next/server';
 
 type Param = {
@@ -43,5 +45,7 @@ export async function GET(
       hasEmailVerified: true,
     },
   });
+  const jwt = createJwt({}, { subject: intent.userId });
+  cookies().set('token', jwt, { httpOnly: true, secure: true });
   return NextResponse.redirect(req.nextUrl.origin);
 }
