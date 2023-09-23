@@ -1,7 +1,12 @@
 import { createEnv } from '@t3-oss/env-nextjs';
+import { z } from 'zod';
 
 export const env = createEnv({
-  server: {},
+  server: {
+    RESEND_API_KEY: z.string(),
+  },
   client: {},
-  runtimeEnv: {},
+  runtimeEnv: {
+    RESEND_API_KEY: process.env.RESEND_API_KEY,
+  },
 });
